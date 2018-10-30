@@ -4,8 +4,8 @@
         <referenceBlock name="customer_account_navigation">
             <block class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-account-navigation-previous-link" after="-" >
                 <arguments>
-                    <argument name="label" xsi:type="string" translate="true">Previous</argument>
-                    <!--<argument name="path" xsi:type="string">custom-path</argument>-->
+                    <argument name="label" xsi:type="string" translate="true">Previously Viewed Products</argument>
+                    <argument name="path" xsi:type="string">previous</argument>
                 </arguments>
             </block>
         </referenceBlock>
