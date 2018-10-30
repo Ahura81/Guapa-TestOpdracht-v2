@@ -15,46 +15,78 @@
 <?php
 if ($exist = ($block->getRecentlyViewedProducts() && $block->getRecentlyViewedProducts()->getSize())) {
     $type = 'widget-viewed';
-    $mode = 'list';
+    $mode = 'grid';
 
     $type = $type . '-' . $mode;
 
-    $image = 'recently_viewed_products_list_content_widget';
+    $image = 'recently_viewed_products_grid_content_widget';
     $title = __('Recently Viewed');
     $items = $block->getRecentlyViewedProducts();
-    $_helper = $this->helper('Magento\Catalog\Helper\Output');
 
-    $showWishlist = true;
-    $showCompare = true;
-    $showCart = true;
-    $rating = 'short';
+    $showWishlist = false;
+    $showCompare = false;
+    $showCart = false;
+    $rating = false;
     $description = ($mode == 'list') ? true : false;
 }
 ?>
-
 <?php if ($exist):?>
     <div class="block widget block-viewed-products-<?= /* @escapeNotVerified */ $mode ?>">
-        <div class="block-title">
-<!--            <strong role="heading" aria-level="2">--><?//= /* @escapeNotVerified */ $title ?><!--</strong>-->
-        </div>
+
+
+
+
+
+
         <div class="block-content">
             <?= /* @escapeNotVerified */ '<!-- ' . $image . '-->' ?>
             <div class="products-<?= /* @escapeNotVerified */ $mode ?> <?= /* @escapeNotVerified */ $mode ?>">
                 <ol class="product-items <?= /* @escapeNotVerified */ $type ?>">
                     <?php $iterator = 1; ?>
-                    <?php foreach ($items as $_item): ?>
-                        <?= /* @escapeNotVerified */ ($iterator++ == 1) ? '<li class="product-item">' : '</li><li class="product-item">' ?>
-                        <div class="product-item-info">
-                            <a href="<?= /* @escapeNotVerified */ $block->getProductUrl($_item) ?>" class="product-item-photo">
-                                <?= $block->getImage($_item, $image)->toHtml() ?>
-                            </a>
-                            <div class="product-item-details">
+
+                    <table class="admin__table-primary dashboard-data" id="productsReviewedGrid_table">
+                        <thead>
+
+                        <tr>
+                            <th class="data-grid-th  no-link col-name">
+                                <span>Thumbnail</span>
+                            </th>
+                            <th class="data-grid-th  no-link col-name">
+                                <span>Name</span>
+                            </th>
+                            <th class="data-grid-th  no-link col-SKU">
+                                <span>SKU</span>
+                            </th>
+                            <th class="data-grid-th  no-link col-price">
+                                <span>Price</span>
+                            </th>
+                            <th class="data-grid-th  no-link col-price">
+                                <span>View Product</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr title="" class="even _clickable">
+                            <?php foreach ($items as $_item): ?>
+                            <?= /* @escapeNotVerified */ ($iterator++ == 1) ? '<li class="product-item">' : '</li><li class="product-item">' ?>
+                            <td class="data-grid-thumbnail-cell">
+                                <a href="<?= /* @escapeNotVerified */ $block->getProductUrl($_item) ?>" class="product-item-photo">
+                                    <?= $block->getImage($_item, $image)->toHtml() ?>
+                                </a>
+                            </td>
+                            <td class=" col-name ">
                                 <strong class="product-item-name">
                                     <a title="<?= $block->escapeHtml($_item->getName()) ?>"
                                        href="<?= /* @escapeNotVerified */ $block->getProductUrl($_item) ?>" class="product-item-link">
                                         <?= $block->escapeHtml($_item->getName()) ?>
                                     </a>
                                 </strong>
+                            </td>
+                            <td class="col-sku">
+                                <?= $block->escapeHtml($_item->getSku()) ?>
+                            </td>
+                            <td class=" col-price a-right ">
                                 <?php /* @escapeNotVerified */ echo $block->getProductPriceHtml(
                                     $_item,
                                     \Magento\Catalog\Pricing\Price\FinalPrice::PRICE_CODE,
@@ -63,6 +95,26 @@ if ($exist = ($block->getRecentlyViewedProducts() && $block->getRecentlyViewedPr
                                         'price_id_suffix' => '-' . $type
                                     ]
                                 ) ?>
+                            </td>
+                            <td class=" col-views col-views last">
+                                <button class="action primary"
+                                        type="button" title="<?= /* @escapeNotVerified */ __('View Product') ?>"
+                                        data-mage-init='{"redirectUrl": {"url": "<?= /* @escapeNotVerified */ $block->getProductUrl($_item) ?>"}}'>
+
+                                    <span><?= /* @escapeNotVerified */ __('View Product') ?></span>
+                                    </a>
+                                </button>
+                            </td>
+                        </tr>
+                        <?php endforeach ?>
+                        </tbody>
+                    </table>
+
+                        <div class="product-item-info">
+
+                            <div class="product-item-details">
+
+
                                 <?php if ($rating): ?>
                                     <?= $block->getReviewsSummaryHtml($_item, $rating) ?>
                                 <?php endif; ?>
@@ -80,7 +132,7 @@ if ($exist = ($block->getRecentlyViewedProducts() && $block->getRecentlyViewedPr
                                                     <?php else: ?>
                                                         <?php
                                                         $postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
-                                                        $postData = $postDataHelper->getPostData($block->getAddToCartUrl($_item), ['product' => $_item->getEntityId()]);
+                                                        $postData = $postDataHelper->getPostData($block->getAddToCartUrl($_item), ['product' => $_item->getEntityId()])
                                                         ?>
                                                         <button class="action tocart primary"
                                                                 data-post='<?= /* @escapeNotVerified */ $postData ?>'
@@ -97,7 +149,6 @@ if ($exist = ($block->getRecentlyViewedProducts() && $block->getRecentlyViewedPr
                                                 <?php endif; ?>
                                             </div>
                                         <?php endif; ?>
-
                                         <?php if ($showWishlist || $showCompare): ?>
                                             <div class="actions-secondary" data-role="add-to-links">
                                                 <?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow() && $showWishlist): ?>
@@ -109,7 +160,7 @@ if ($exist = ($block->getRecentlyViewedProducts() && $block->getRecentlyViewedPr
                                                     </a>
                                                 <?php endif; ?>
                                                 <?php if ($block->getAddToCompareUrl() && $showCompare): ?>
-                                                    <?php  $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');?>
+                                                    <?php $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');?>
                                                     <a href="#" class="action tocompare"
                                                        data-post='<?= /* @escapeNotVerified */ $compareHelper->getPostDataParams($_item) ?>'
                                                        title="<?= /* @escapeNotVerified */ __('Add to Compare') ?>">
@@ -120,18 +171,10 @@ if ($exist = ($block->getRecentlyViewedProducts() && $block->getRecentlyViewedPr
                                         <?php endif; ?>
                                     </div>
                                 <?php endif; ?>
-                                <?php if ($description):?>
-                                    <div class="product-item-description">
-                                        <?= /* @escapeNotVerified */ $_helper->productAttribute($_item, $_item->getShortDescription(), 'short_description') ?>
-                                        <a title="<?= $block->escapeHtml($_item->getName()) ?>"
-                                           href="<?= /* @escapeNotVerified */ $block->getProductUrl($_item) ?>"
-                                           class="action more"><?= /* @escapeNotVerified */ __('Learn More') ?></a>
-                                    </div>
-                                <?php endif; ?>
                             </div>
                         </div>
                         <?= ($iterator == count($items)+1) ? '</li>' : '' ?>
-                    <?php endforeach ?>
+
                 </ol>
             </div>
             <?= $block->getPagerHtml() ?>
