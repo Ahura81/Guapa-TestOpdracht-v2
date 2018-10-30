@@ -1,8 +1,9 @@
 # Guapa-TestOpdracht-v2
 
-Vanwege een fatale computercrash en het verlies van de database ben ik in een nieuwe Magento installatie en repository verder gegaaan. De eerste repository en daarbij behorende commits kunnen bekeken worden op https://github.com/Ahura81/guapa_test
+Vanwege een fatale computercrash en het verlies van de database ben ik in een nieuwe Magento installatie en repository verder gegaaan. De eerste repository en daarbij behorende commits kunnen bekeken worden op: https://github.com/Ahura81/guapa_test
 
 Screencast: https://drive.google.com/file/d/1KjlmN-okc-y5px1zhLn2ccMewaKsiAiM/view?usp=sharing
+
 Trello board: https://trello.com/b/qHy2dQDe/guapatest
 
 
